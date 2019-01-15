@@ -16,4 +16,4 @@ def get_nova_client():
                                     user_domain_name=os.environ.get('OS_USER_DOMAIN_NAME'),
                                     project_domain_name=os.environ.get('OS_PROJECT_DOMAIN_NAME'))
     sess = session.Session(auth=auth)
-    return client.Client('2.1', session=sess)
+    return client.Client('2.1', session=sess, )

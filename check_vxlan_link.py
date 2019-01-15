@@ -62,7 +62,7 @@ class VxlanLinkCheck(object):
                 else:
                     LOG.info('vm %s %s is ACTIVE', vm.id, vm_name)
                     vm_uuid = vm.id
-                    for key, value in vm_info.addresses.item():
+                    for key, value in vm_info.addresses.items():
                         for add_id in iter(value):
                             if add_id.get('OS-EXT-IPS:type') == 'fixed':
                                 vm_ip = add_id.get('addr')
