@@ -2,6 +2,7 @@ import random
 import string
 import time
 
+from common.config import CONF
 from common.log import LOG
 from common.os_clients import get_nova_client
 
@@ -41,9 +42,9 @@ class VxlanLinkCheck(object):
             vm_name = 'ckpet-' + ''.join(random.sample(
                 string.ascii_letters + string.digits, 8
             ))
-            flavor = 'ecs_2C4G50G_general'
-            image = 'centos73x86_64_qga_OK'
-            nics = [{'net-id': 'c646ecd4-5792-4862-826f-aa59454686d4'}]
+            flavor = CONF.get('DEFAULT', 'flavor')
+            image = CONF.get('DEFAULT', 'image')
+            nics = [{'net-id':  CONF.get('DEFAULT', 'network')}]
             availability_zone = ':' + cmp + ':'
             vm = self.novac.servers.create(
                 name=vm_name,
