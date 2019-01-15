@@ -56,10 +56,14 @@ class VxlanLinkCheck(object):
 
             # Wait for vm OK
             vm_ip = None
+            vm_uuid = None
             while True:
                 vm_info = self.novac.servers.get(vm.id)
-                if vm_info.status != 'ACTIVE':
+                if vm_info.status != 'ACTIVE' and vm_info.status != 'ERROR':
                     time.sleep(3)
+                elif vm_info.status == 'ERROR':
+                    LOG.info('vm %s %s on %s is ERROR', vm.id, vm_name, cmp)
+                    break
                 else:
                     LOG.info('vm %s %s is ACTIVE', vm.id, vm_name)
                     vm_uuid = vm.id
@@ -68,9 +72,8 @@ class VxlanLinkCheck(object):
                             if add_id.get('OS-EXT-IPS:type') == 'fixed':
                                 vm_ip = add_id.get('addr')
                                 break
+                    self.pets.append(CheckPet(cmp, ip=vm_ip, uuid=vm_uuid))
                     break
-
-            self.pets.append(CheckPet(cmp, ip=vm_ip, uuid=vm_uuid))
 
         index = 0
         with open('iplist', 'a+') as f:
